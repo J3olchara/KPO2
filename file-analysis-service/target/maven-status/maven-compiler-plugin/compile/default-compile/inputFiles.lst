@@ -1,0 +1,15 @@
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/controller/TextAnalysisController.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/dto/SimilarityResultDto.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/model/SimilarityResult.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/model/TextStatistics.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/service/impl/TextAnalysisServiceImpl.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/service/TextAnalysisService.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/exception/FileServiceException.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/repository/SimilarityResultRepository.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/model/SimilarFile.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/FileAnalysisServiceApplication.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/dto/TextStatisticsDto.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/client/FileMetadata.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/repository/TextStatisticsRepository.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/dto/SimilarFileDto.java
+/Users/arseniizxc/Documents/KPO2/file-analysis-service/src/main/java/ru/hse/fileanalysis/client/FileStorageClient.java

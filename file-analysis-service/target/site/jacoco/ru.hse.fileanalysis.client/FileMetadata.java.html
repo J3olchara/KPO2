@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileMetadata.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-analysis-service</a> &gt; <a href="index.source.html" class="el_package">ru.hse.fileanalysis.client</a> &gt; <span class="el_source">FileMetadata.java</span></div><h1>FileMetadata.java</h1><pre class="source lang-java linenums">package ru.hse.fileanalysis.client;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+public class FileMetadata {
+    private String fileId;
+    private String fileName;
+    private Long size;
+    private LocalDateTime uploadDate;
+    
+    // Конструкторы
+<span class="nc" id="L13">    public FileMetadata() {</span>
+<span class="nc" id="L14">    }</span>
+    
+<span class="fc" id="L16">    public FileMetadata(String fileId, String fileName, Long size, LocalDateTime uploadDate) {</span>
+<span class="fc" id="L17">        this.fileId = fileId;</span>
+<span class="fc" id="L18">        this.fileName = fileName;</span>
+<span class="fc" id="L19">        this.size = size;</span>
+<span class="fc" id="L20">        this.uploadDate = uploadDate;</span>
+<span class="fc" id="L21">    }</span>
+    
+    // Геттеры и сеттеры
+    public String getFileId() {
+<span class="fc" id="L25">        return fileId;</span>
+    }
+    
+    public void setFileId(String fileId) {
+<span class="nc" id="L29">        this.fileId = fileId;</span>
+<span class="nc" id="L30">    }</span>
+    
+    public String getFileName() {
+<span class="fc" id="L33">        return fileName;</span>
+    }
+    
+    public void setFileName(String fileName) {
+<span class="nc" id="L37">        this.fileName = fileName;</span>
+<span class="nc" id="L38">    }</span>
+    
+    public Long getSize() {
+<span class="fc" id="L41">        return size;</span>
+    }
+    
+    public void setSize(Long size) {
+<span class="nc" id="L45">        this.size = size;</span>
+<span class="nc" id="L46">    }</span>
+    
+    public LocalDateTime getUploadDate() {
+<span class="nc" id="L49">        return uploadDate;</span>
+    }
+    
+    public void setUploadDate(LocalDateTime uploadDate) {
+<span class="nc" id="L53">        this.uploadDate = uploadDate;</span>
+<span class="nc" id="L54">    }</span>
+    
+    // Builder паттерн
+    public static FileMetadataBuilder builder() {
+<span class="fc" id="L58">        return new FileMetadataBuilder();</span>
+    }
+    
+    public static class FileMetadataBuilder {
+        private String fileId;
+        private String fileName;
+        private Long size;
+        private LocalDateTime uploadDate;
+        
+<span class="fc" id="L67">        FileMetadataBuilder() {</span>
+<span class="fc" id="L68">        }</span>
+        
+        public FileMetadataBuilder fileId(String fileId) {
+<span class="fc" id="L71">            this.fileId = fileId;</span>
+<span class="fc" id="L72">            return this;</span>
+        }
+        
+        public FileMetadataBuilder fileName(String fileName) {
+<span class="fc" id="L76">            this.fileName = fileName;</span>
+<span class="fc" id="L77">            return this;</span>
+        }
+        
+        public FileMetadataBuilder size(Long size) {
+<span class="fc" id="L81">            this.size = size;</span>
+<span class="fc" id="L82">            return this;</span>
+        }
+        
+        public FileMetadataBuilder uploadDate(LocalDateTime uploadDate) {
+<span class="fc" id="L86">            this.uploadDate = uploadDate;</span>
+<span class="fc" id="L87">            return this;</span>
+        }
+        
+        public FileMetadata build() {
+<span class="fc" id="L91">            return new FileMetadata(fileId, fileName, size, uploadDate);</span>
+        }
+    }
+    
+    // equals и hashCode
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L99" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L100">        FileMetadata that = (FileMetadata) o;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        return Objects.equals(fileId, that.fileId) &amp;&amp;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">               Objects.equals(fileName, that.fileName) &amp;&amp;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">               Objects.equals(size, that.size) &amp;&amp;</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">               Objects.equals(uploadDate, that.uploadDate);</span>
+    }
+    
+    @Override
+    public int hashCode() {
+<span class="nc" id="L109">        return Objects.hash(fileId, fileName, size, uploadDate);</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextStatisticsDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-analysis-service</a> &gt; <a href="index.source.html" class="el_package">ru.hse.fileanalysis.dto</a> &gt; <span class="el_source">TextStatisticsDto.java</span></div><h1>TextStatisticsDto.java</h1><pre class="source lang-java linenums">package ru.hse.fileanalysis.dto;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+public class TextStatisticsDto {
+    private String fileId;
+    private Integer paragraphs;
+    private Integer words;
+    private Integer characters;
+    private LocalDateTime analysisDate;
+    
+    // Конструкторы
+<span class="fc" id="L14">    public TextStatisticsDto() {</span>
+<span class="fc" id="L15">    }</span>
+    
+<span class="fc" id="L17">    public TextStatisticsDto(String fileId, Integer paragraphs, Integer words, Integer characters, LocalDateTime analysisDate) {</span>
+<span class="fc" id="L18">        this.fileId = fileId;</span>
+<span class="fc" id="L19">        this.paragraphs = paragraphs;</span>
+<span class="fc" id="L20">        this.words = words;</span>
+<span class="fc" id="L21">        this.characters = characters;</span>
+<span class="fc" id="L22">        this.analysisDate = analysisDate;</span>
+<span class="fc" id="L23">    }</span>
+    
+    // Геттеры и сеттеры
+    public String getFileId() {
+<span class="fc" id="L27">        return fileId;</span>
+    }
+    
+    public void setFileId(String fileId) {
+<span class="fc" id="L31">        this.fileId = fileId;</span>
+<span class="fc" id="L32">    }</span>
+    
+    public Integer getParagraphs() {
+<span class="fc" id="L35">        return paragraphs;</span>
+    }
+    
+    public void setParagraphs(Integer paragraphs) {
+<span class="fc" id="L39">        this.paragraphs = paragraphs;</span>
+<span class="fc" id="L40">    }</span>
+    
+    public Integer getWords() {
+<span class="fc" id="L43">        return words;</span>
+    }
+    
+    public void setWords(Integer words) {
+<span class="fc" id="L47">        this.words = words;</span>
+<span class="fc" id="L48">    }</span>
+    
+    public Integer getCharacters() {
+<span class="fc" id="L51">        return characters;</span>
+    }
+    
+    public void setCharacters(Integer characters) {
+<span class="fc" id="L55">        this.characters = characters;</span>
+<span class="fc" id="L56">    }</span>
+    
+    public LocalDateTime getAnalysisDate() {
+<span class="fc" id="L59">        return analysisDate;</span>
+    }
+    
+    public void setAnalysisDate(LocalDateTime analysisDate) {
+<span class="fc" id="L63">        this.analysisDate = analysisDate;</span>
+<span class="fc" id="L64">    }</span>
+    
+    // Builder паттерн
+    public static TextStatisticsDtoBuilder builder() {
+<span class="fc" id="L68">        return new TextStatisticsDtoBuilder();</span>
+    }
+    
+    public static class TextStatisticsDtoBuilder {
+        private String fileId;
+        private Integer paragraphs;
+        private Integer words;
+        private Integer characters;
+        private LocalDateTime analysisDate;
+        
+<span class="fc" id="L78">        TextStatisticsDtoBuilder() {</span>
+<span class="fc" id="L79">        }</span>
+        
+        public TextStatisticsDtoBuilder fileId(String fileId) {
+<span class="fc" id="L82">            this.fileId = fileId;</span>
+<span class="fc" id="L83">            return this;</span>
+        }
+        
+        public TextStatisticsDtoBuilder paragraphs(Integer paragraphs) {
+<span class="fc" id="L87">            this.paragraphs = paragraphs;</span>
+<span class="fc" id="L88">            return this;</span>
+        }
+        
+        public TextStatisticsDtoBuilder words(Integer words) {
+<span class="fc" id="L92">            this.words = words;</span>
+<span class="fc" id="L93">            return this;</span>
+        }
+        
+        public TextStatisticsDtoBuilder characters(Integer characters) {
+<span class="fc" id="L97">            this.characters = characters;</span>
+<span class="fc" id="L98">            return this;</span>
+        }
+        
+        public TextStatisticsDtoBuilder analysisDate(LocalDateTime analysisDate) {
+<span class="fc" id="L102">            this.analysisDate = analysisDate;</span>
+<span class="fc" id="L103">            return this;</span>
+        }
+        
+        public TextStatisticsDto build() {
+<span class="fc" id="L107">            return new TextStatisticsDto(fileId, paragraphs, words, characters, analysisDate);</span>
+        }
+    }
+    
+    // equals и hashCode
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="fc" id="L116">        TextStatisticsDto that = (TextStatisticsDto) o;</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        return Objects.equals(fileId, that.fileId) &amp;&amp;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">               Objects.equals(paragraphs, that.paragraphs) &amp;&amp;</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">               Objects.equals(words, that.words) &amp;&amp;</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">               Objects.equals(characters, that.characters) &amp;&amp;</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">               Objects.equals(analysisDate, that.analysisDate);</span>
+    }
+    
+    @Override
+    public int hashCode() {
+<span class="fc" id="L126">        return Objects.hash(fileId, paragraphs, words, characters, analysisDate);</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

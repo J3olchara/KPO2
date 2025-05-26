@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimilarityResultDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-analysis-service</a> &gt; <a href="index.source.html" class="el_package">ru.hse.fileanalysis.dto</a> &gt; <span class="el_source">SimilarityResultDto.java</span></div><h1>SimilarityResultDto.java</h1><pre class="source lang-java linenums">package ru.hse.fileanalysis.dto;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+
+public class SimilarityResultDto {
+    private String fileId;
+    private List&lt;SimilarFileDto&gt; similarFiles;
+    private LocalDateTime analysisDate;
+    
+    // Конструкторы
+<span class="nc" id="L13">    public SimilarityResultDto() {</span>
+<span class="nc" id="L14">    }</span>
+    
+<span class="fc" id="L16">    public SimilarityResultDto(String fileId, List&lt;SimilarFileDto&gt; similarFiles, LocalDateTime analysisDate) {</span>
+<span class="fc" id="L17">        this.fileId = fileId;</span>
+<span class="fc" id="L18">        this.similarFiles = similarFiles;</span>
+<span class="fc" id="L19">        this.analysisDate = analysisDate;</span>
+<span class="fc" id="L20">    }</span>
+    
+    // Геттеры и сеттеры
+    public String getFileId() {
+<span class="fc" id="L24">        return fileId;</span>
+    }
+    
+    public void setFileId(String fileId) {
+<span class="nc" id="L28">        this.fileId = fileId;</span>
+<span class="nc" id="L29">    }</span>
+    
+    public List&lt;SimilarFileDto&gt; getSimilarFiles() {
+<span class="fc" id="L32">        return similarFiles;</span>
+    }
+    
+    public void setSimilarFiles(List&lt;SimilarFileDto&gt; similarFiles) {
+<span class="nc" id="L36">        this.similarFiles = similarFiles;</span>
+<span class="nc" id="L37">    }</span>
+    
+    public LocalDateTime getAnalysisDate() {
+<span class="fc" id="L40">        return analysisDate;</span>
+    }
+    
+    public void setAnalysisDate(LocalDateTime analysisDate) {
+<span class="nc" id="L44">        this.analysisDate = analysisDate;</span>
+<span class="nc" id="L45">    }</span>
+    
+    // Статический класс билдера
+    public static SimilarityResultDtoBuilder builder() {
+<span class="fc" id="L49">        return new SimilarityResultDtoBuilder();</span>
+    }
+    
+    public static class SimilarityResultDtoBuilder {
+        private String fileId;
+        private List&lt;SimilarFileDto&gt; similarFiles;
+        private LocalDateTime analysisDate;
+        
+<span class="fc" id="L57">        SimilarityResultDtoBuilder() {</span>
+<span class="fc" id="L58">        }</span>
+        
+        public SimilarityResultDtoBuilder fileId(String fileId) {
+<span class="fc" id="L61">            this.fileId = fileId;</span>
+<span class="fc" id="L62">            return this;</span>
+        }
+        
+        public SimilarityResultDtoBuilder similarFiles(List&lt;SimilarFileDto&gt; similarFiles) {
+<span class="fc" id="L66">            this.similarFiles = similarFiles;</span>
+<span class="fc" id="L67">            return this;</span>
+        }
+        
+        public SimilarityResultDtoBuilder analysisDate(LocalDateTime analysisDate) {
+<span class="fc" id="L71">            this.analysisDate = analysisDate;</span>
+<span class="fc" id="L72">            return this;</span>
+        }
+        
+        public SimilarityResultDto build() {
+<span class="fc" id="L76">            return new SimilarityResultDto(fileId, similarFiles, analysisDate);</span>
+        }
+    }
+    
+    // equals и hashCode
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L84" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L85">        SimilarityResultDto that = (SimilarityResultDto) o;</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        return Objects.equals(fileId, that.fileId) &amp;&amp;</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">               Objects.equals(similarFiles, that.similarFiles) &amp;&amp;</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">               Objects.equals(analysisDate, that.analysisDate);</span>
+    }
+    
+    @Override
+    public int hashCode() {
+<span class="nc" id="L93">        return Objects.hash(fileId, similarFiles, analysisDate);</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimilarFile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-analysis-service</a> &gt; <a href="index.source.html" class="el_package">ru.hse.fileanalysis.model</a> &gt; <span class="el_source">SimilarFile.java</span></div><h1>SimilarFile.java</h1><pre class="source lang-java linenums">package ru.hse.fileanalysis.model;
+
+import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = &quot;similar_files&quot;)
+public class SimilarFile {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @ManyToOne
+    @JoinColumn(name = &quot;similarity_result_id&quot;, nullable = false)
+    private SimilarityResult similarityResult;
+    
+    @Column(nullable = false)
+    private String fileId;
+    
+    @Column(nullable = false)
+    private String fileName;
+    
+    @Column(nullable = false)
+    private Double similarityScore; // От 0 до 100
+    
+    // Конструкторы
+<span class="nc" id="L36">    public SimilarFile() {</span>
+<span class="nc" id="L37">    }</span>
+    
+<span class="fc" id="L39">    public SimilarFile(Long id, SimilarityResult similarityResult, String fileId, String fileName, Double similarityScore) {</span>
+<span class="fc" id="L40">        this.id = id;</span>
+<span class="fc" id="L41">        this.similarityResult = similarityResult;</span>
+<span class="fc" id="L42">        this.fileId = fileId;</span>
+<span class="fc" id="L43">        this.fileName = fileName;</span>
+<span class="fc" id="L44">        this.similarityScore = similarityScore;</span>
+<span class="fc" id="L45">    }</span>
+    
+    // Геттеры и сеттеры
+    public Long getId() {
+<span class="nc" id="L49">        return id;</span>
+    }
+    
+    public void setId(Long id) {
+<span class="nc" id="L53">        this.id = id;</span>
+<span class="nc" id="L54">    }</span>
+    
+    public SimilarityResult getSimilarityResult() {
+<span class="nc" id="L57">        return similarityResult;</span>
+    }
+    
+    public void setSimilarityResult(SimilarityResult similarityResult) {
+<span class="nc" id="L61">        this.similarityResult = similarityResult;</span>
+<span class="nc" id="L62">    }</span>
+    
+    public String getFileId() {
+<span class="fc" id="L65">        return fileId;</span>
+    }
+    
+    public void setFileId(String fileId) {
+<span class="nc" id="L69">        this.fileId = fileId;</span>
+<span class="nc" id="L70">    }</span>
+    
+    public String getFileName() {
+<span class="fc" id="L73">        return fileName;</span>
+    }
+    
+    public void setFileName(String fileName) {
+<span class="nc" id="L77">        this.fileName = fileName;</span>
+<span class="nc" id="L78">    }</span>
+    
+    public Double getSimilarityScore() {
+<span class="fc" id="L81">        return similarityScore;</span>
+    }
+    
+    public void setSimilarityScore(Double similarityScore) {
+<span class="nc" id="L85">        this.similarityScore = similarityScore;</span>
+<span class="nc" id="L86">    }</span>
+    
+    // Builder паттерн
+    public static SimilarFileBuilder builder() {
+<span class="fc" id="L90">        return new SimilarFileBuilder();</span>
+    }
+    
+    public static class SimilarFileBuilder {
+        private Long id;
+        private SimilarityResult similarityResult;
+        private String fileId;
+        private String fileName;
+        private Double similarityScore;
+        
+<span class="fc" id="L100">        SimilarFileBuilder() {</span>
+<span class="fc" id="L101">        }</span>
+        
+        public SimilarFileBuilder id(Long id) {
+<span class="fc" id="L104">            this.id = id;</span>
+<span class="fc" id="L105">            return this;</span>
+        }
+        
+        public SimilarFileBuilder similarityResult(SimilarityResult similarityResult) {
+<span class="fc" id="L109">            this.similarityResult = similarityResult;</span>
+<span class="fc" id="L110">            return this;</span>
+        }
+        
+        public SimilarFileBuilder fileId(String fileId) {
+<span class="fc" id="L114">            this.fileId = fileId;</span>
+<span class="fc" id="L115">            return this;</span>
+        }
+        
+        public SimilarFileBuilder fileName(String fileName) {
+<span class="fc" id="L119">            this.fileName = fileName;</span>
+<span class="fc" id="L120">            return this;</span>
+        }
+        
+        public SimilarFileBuilder similarityScore(Double similarityScore) {
+<span class="fc" id="L124">            this.similarityScore = similarityScore;</span>
+<span class="fc" id="L125">            return this;</span>
+        }
+        
+        public SimilarFile build() {
+<span class="fc" id="L129">            return new SimilarFile(id, similarityResult, fileId, fileName, similarityScore);</span>
+        }
+    }
+    
+    // equals и hashCode
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L138">        SimilarFile that = (SimilarFile) o;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        return Objects.equals(id, that.id) &amp;&amp;</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">               Objects.equals(similarityResult, that.similarityResult) &amp;&amp;</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">               Objects.equals(fileId, that.fileId) &amp;&amp;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">               Objects.equals(fileName, that.fileName) &amp;&amp;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">               Objects.equals(similarityScore, that.similarityScore);</span>
+    }
+    
+    @Override
+    public int hashCode() {
+<span class="nc" id="L148">        return Objects.hash(id, similarityResult, fileId, fileName, similarityScore);</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextAnalysisServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-analysis-service</a> &gt; <a href="index.source.html" class="el_package">ru.hse.fileanalysis.service.impl</a> &gt; <span class="el_source">TextAnalysisServiceImpl.java</span></div><h1>TextAnalysisServiceImpl.java</h1><pre class="source lang-java linenums">package ru.hse.fileanalysis.service.impl;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import reactor.core.publisher.Mono;
+import ru.hse.fileanalysis.client.FileMetadata;
+import ru.hse.fileanalysis.client.FileStorageClient;
+import ru.hse.fileanalysis.dto.SimilarFileDto;
+import ru.hse.fileanalysis.dto.SimilarityResultDto;
+import ru.hse.fileanalysis.dto.TextStatisticsDto;
+import ru.hse.fileanalysis.exception.FileServiceException;
+import ru.hse.fileanalysis.model.SimilarFile;
+import ru.hse.fileanalysis.model.SimilarityResult;
+import ru.hse.fileanalysis.model.TextStatistics;
+import ru.hse.fileanalysis.repository.SimilarityResultRepository;
+import ru.hse.fileanalysis.repository.TextStatisticsRepository;
+import ru.hse.fileanalysis.service.TextAnalysisService;
+
+@Service
+public class TextAnalysisServiceImpl implements TextAnalysisService {
+
+    private final FileStorageClient fileStorageClient;
+    private final TextStatisticsRepository textStatisticsRepository;
+    private final SimilarityResultRepository similarityResultRepository;
+    private final WebClient webClient;
+    
+    @Value(&quot;${wordcloud.api.url}&quot;)
+    private String wordCloudApiUrl;
+    
+    @Autowired
+<span class="fc" id="L45">    public TextAnalysisServiceImpl(FileStorageClient fileStorageClient,</span>
+                                TextStatisticsRepository textStatisticsRepository,
+                                SimilarityResultRepository similarityResultRepository,
+                                WebClient.Builder webClientBuilder) {
+<span class="fc" id="L49">        this.fileStorageClient = fileStorageClient;</span>
+<span class="fc" id="L50">        this.textStatisticsRepository = textStatisticsRepository;</span>
+<span class="fc" id="L51">        this.similarityResultRepository = similarityResultRepository;</span>
+<span class="fc" id="L52">        this.webClient = webClientBuilder.build();</span>
+<span class="fc" id="L53">    }</span>
+
+    @Override
+    public TextStatisticsDto analyzeTextStatistics(String fileId) {
+<span class="fc" id="L57">        return fileStorageClient.getFileContent(fileId)</span>
+<span class="fc" id="L58">                .map(content -&gt; {</span>
+                    // Анализируем статистику текста
+<span class="fc" id="L60">                    int paragraphs = countParagraphs(content);</span>
+<span class="fc" id="L61">                    int words = countWords(content);</span>
+<span class="fc" id="L62">                    int characters = content.length();</span>
+                    
+                    // Сохраняем в БД
+<span class="fc" id="L65">                    TextStatistics stats = TextStatistics.builder()</span>
+<span class="fc" id="L66">                            .fileId(fileId)</span>
+<span class="fc" id="L67">                            .paragraphs(paragraphs)</span>
+<span class="fc" id="L68">                            .words(words)</span>
+<span class="fc" id="L69">                            .characters(characters)</span>
+<span class="fc" id="L70">                            .analysisDate(LocalDateTime.now())</span>
+<span class="fc" id="L71">                            .build();</span>
+                    
+<span class="fc" id="L73">                    textStatisticsRepository.save(stats);</span>
+                    
+                    // Возвращаем DTO
+<span class="fc" id="L76">                    return TextStatisticsDto.builder()</span>
+<span class="fc" id="L77">                            .fileId(stats.getFileId())</span>
+<span class="fc" id="L78">                            .paragraphs(stats.getParagraphs())</span>
+<span class="fc" id="L79">                            .words(stats.getWords())</span>
+<span class="fc" id="L80">                            .characters(stats.getCharacters())</span>
+<span class="fc" id="L81">                            .analysisDate(stats.getAnalysisDate())</span>
+<span class="fc" id="L82">                            .build();</span>
+                })
+<span class="fc" id="L84">                .block();</span>
+    }
+
+    @Override
+    public SimilarityResultDto analyzeSimilarity(String fileId) {
+        // Получаем содержимое текущего файла
+<span class="fc" id="L90">        String currentFileContent = fileStorageClient.getFileContent(fileId).block();</span>
+        
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (currentFileContent == null) {</span>
+<span class="fc" id="L93">            throw new FileServiceException(&quot;Не удалось получить содержимое файла с id: &quot; + fileId);</span>
+        }
+        
+        // Получаем список всех файлов
+<span class="fc" id="L97">        FileMetadata[] allFiles = fileStorageClient.getAllFiles().block();</span>
+        
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (allFiles == null) {</span>
+<span class="nc" id="L100">            throw new FileServiceException(&quot;Не удалось получить список файлов&quot;);</span>
+        }
+        
+        // Создаем результат анализа
+<span class="fc" id="L104">        SimilarityResult similarityResult = SimilarityResult.builder()</span>
+<span class="fc" id="L105">                .fileId(fileId)</span>
+<span class="fc" id="L106">                .similarFiles(new ArrayList&lt;&gt;())</span>
+<span class="fc" id="L107">                .analysisDate(LocalDateTime.now())</span>
+<span class="fc" id="L108">                .build();</span>
+        
+        // Анализируем схожесть с другими файлами
+<span class="fc" id="L111">        List&lt;SimilarFileDto&gt; similarFileDtos = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        for (FileMetadata file : allFiles) {</span>
+            // Пропускаем текущий файл
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            if (file.getFileId().equals(fileId)) {</span>
+<span class="nc" id="L116">                continue;</span>
+            }
+            
+            // Получаем содержимое файла для сравнения
+<span class="fc" id="L120">            String otherFileContent = fileStorageClient.getFileContent(file.getFileId()).block();</span>
+            
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">            if (otherFileContent == null) {</span>
+<span class="nc" id="L123">                continue;</span>
+            }
+            
+            // Вычисляем схожесть
+<span class="fc" id="L127">            double similarity = calculateSimilarity(currentFileContent, otherFileContent);</span>
+            
+            // Если схожесть выше порога (например, 50%), добавляем в результат
+<span class="fc bfc" id="L130" title="All 2 branches covered.">            if (similarity &gt; 50.0) {</span>
+<span class="fc" id="L131">                SimilarFile similarFile = SimilarFile.builder()</span>
+<span class="fc" id="L132">                        .similarityResult(similarityResult)</span>
+<span class="fc" id="L133">                        .fileId(file.getFileId())</span>
+<span class="fc" id="L134">                        .fileName(file.getFileName())</span>
+<span class="fc" id="L135">                        .similarityScore(similarity)</span>
+<span class="fc" id="L136">                        .build();</span>
+                
+<span class="fc" id="L138">                similarityResult.getSimilarFiles().add(similarFile);</span>
+                
+<span class="fc" id="L140">                similarFileDtos.add(SimilarFileDto.builder()</span>
+<span class="fc" id="L141">                        .fileId(file.getFileId())</span>
+<span class="fc" id="L142">                        .fileName(file.getFileName())</span>
+<span class="fc" id="L143">                        .similarityScore(similarity)</span>
+<span class="fc" id="L144">                        .build());</span>
+            }
+        }
+        
+        // Сохраняем результат в БД
+<span class="fc" id="L149">        similarityResultRepository.save(similarityResult);</span>
+        
+        // Возвращаем DTO
+<span class="fc" id="L152">        return SimilarityResultDto.builder()</span>
+<span class="fc" id="L153">                .fileId(fileId)</span>
+<span class="fc" id="L154">                .similarFiles(similarFileDtos)</span>
+<span class="fc" id="L155">                .analysisDate(similarityResult.getAnalysisDate())</span>
+<span class="fc" id="L156">                .build();</span>
+    }
+
+    @Override
+    public Resource generateWordCloud(String fileId, String format, Integer width, Integer height) {
+        // Получаем содержимое файла
+<span class="fc" id="L162">        String content = fileStorageClient.getFileContent(fileId).block();</span>
+        
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        if (content == null) {</span>
+<span class="fc" id="L165">            throw new FileServiceException(&quot;Не удалось получить содержимое файла с id: &quot; + fileId);</span>
+        }
+        
+        // Формируем параметры запроса к API облака слов
+<span class="fc" id="L169">        Map&lt;String, Object&gt; params = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L170">        params.put(&quot;text&quot;, content);</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        params.put(&quot;format&quot;, format != null ? format : &quot;svg&quot;);</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        if (width != null) params.put(&quot;width&quot;, width);</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if (height != null) params.put(&quot;height&quot;, height);</span>
+        
+        // Вызываем внешнее API для генерации облака слов
+<span class="nc" id="L176">        byte[] wordCloudImage = webClient.post()</span>
+<span class="nc" id="L177">                .uri(wordCloudApiUrl)</span>
+<span class="nc" id="L178">                .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="nc" id="L179">                .bodyValue(params)</span>
+<span class="nc" id="L180">                .retrieve()</span>
+<span class="nc" id="L181">                .bodyToMono(byte[].class)</span>
+<span class="nc" id="L182">                .block();</span>
+        
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (wordCloudImage == null) {</span>
+<span class="nc" id="L185">            throw new FileServiceException(&quot;Не удалось сгенерировать облако слов&quot;);</span>
+        }
+        
+<span class="nc" id="L188">        return new ByteArrayResource(wordCloudImage);</span>
+    }
+
+    @Override
+    public TextStatisticsDto getTextStatistics(String fileId) {
+<span class="fc" id="L193">        TextStatistics stats = textStatisticsRepository.findById(fileId)</span>
+<span class="fc" id="L194">                .orElseThrow(() -&gt; new FileServiceException(&quot;Статистика для файла с id: &quot; + fileId + &quot; не найдена&quot;));</span>
+        
+<span class="fc" id="L196">        return TextStatisticsDto.builder()</span>
+<span class="fc" id="L197">                .fileId(stats.getFileId())</span>
+<span class="fc" id="L198">                .paragraphs(stats.getParagraphs())</span>
+<span class="fc" id="L199">                .words(stats.getWords())</span>
+<span class="fc" id="L200">                .characters(stats.getCharacters())</span>
+<span class="fc" id="L201">                .analysisDate(stats.getAnalysisDate())</span>
+<span class="fc" id="L202">                .build();</span>
+    }
+
+    @Override
+    public SimilarityResultDto getSimilarityResult(String fileId) {
+<span class="fc" id="L207">        SimilarityResult result = similarityResultRepository.findById(fileId)</span>
+<span class="fc" id="L208">                .orElseThrow(() -&gt; new FileServiceException(&quot;Результаты анализа схожести для файла с id: &quot; + fileId + &quot; не найдены&quot;));</span>
+        
+<span class="fc" id="L210">        List&lt;SimilarFileDto&gt; similarFileDtos = result.getSimilarFiles().stream()</span>
+<span class="fc" id="L211">                .map(file -&gt; SimilarFileDto.builder()</span>
+<span class="fc" id="L212">                        .fileId(file.getFileId())</span>
+<span class="fc" id="L213">                        .fileName(file.getFileName())</span>
+<span class="fc" id="L214">                        .similarityScore(file.getSimilarityScore())</span>
+<span class="fc" id="L215">                        .build())</span>
+<span class="fc" id="L216">                .collect(Collectors.toList());</span>
+        
+<span class="fc" id="L218">        return SimilarityResultDto.builder()</span>
+<span class="fc" id="L219">                .fileId(result.getFileId())</span>
+<span class="fc" id="L220">                .similarFiles(similarFileDtos)</span>
+<span class="fc" id="L221">                .analysisDate(result.getAnalysisDate())</span>
+<span class="fc" id="L222">                .build();</span>
+    }
+    
+    // Вспомогательные методы
+    
+    private int countParagraphs(String text) {
+        // Разделяем текст на абзацы по пустым строкам
+<span class="fc" id="L229">        String[] paragraphs = text.split(&quot;\\n\\s*\\n&quot;);</span>
+<span class="fc" id="L230">        return paragraphs.length;</span>
+    }
+    
+    private int countWords(String text) {
+        // Разделяем текст на слова
+<span class="fc" id="L235">        String[] words = text.split(&quot;\\s+&quot;);</span>
+<span class="fc" id="L236">        return words.length;</span>
+    }
+    
+    private double calculateSimilarity(String text1, String text2) {
+        // Простой алгоритм для вычисления схожести текстов
+        // Разбиваем тексты на слова
+<span class="fc" id="L242">        List&lt;String&gt; words1 = Arrays.asList(text1.toLowerCase().split(&quot;\\s+&quot;));</span>
+<span class="fc" id="L243">        List&lt;String&gt; words2 = Arrays.asList(text2.toLowerCase().split(&quot;\\s+&quot;));</span>
+        
+        // Находим общие слова
+<span class="fc" id="L246">        int commonWords = 0;</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        for (String word : words1) {</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">            if (words2.contains(word)) {</span>
+<span class="fc" id="L249">                commonWords++;</span>
+            }
+        }
+        
+        // Вычисляем схожесть как процент общих слов от общего количества уникальных слов
+<span class="fc" id="L254">        int totalUniqueWords = (int) words1.stream().distinct().count() + (int) words2.stream().distinct().count() - commonWords;</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">        if (totalUniqueWords == 0) {</span>
+<span class="nc" id="L256">            return 0.0;</span>
+        }
+        
+<span class="fc" id="L259">        return (commonWords * 100.0) / totalUniqueWords;</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

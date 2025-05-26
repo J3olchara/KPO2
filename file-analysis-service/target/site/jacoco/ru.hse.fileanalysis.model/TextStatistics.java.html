@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextStatistics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-analysis-service</a> &gt; <a href="index.source.html" class="el_package">ru.hse.fileanalysis.model</a> &gt; <span class="el_source">TextStatistics.java</span></div><h1>TextStatistics.java</h1><pre class="source lang-java linenums">package ru.hse.fileanalysis.model;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = &quot;text_statistics&quot;)
+public class TextStatistics {
+    
+    @Id
+    private String fileId;
+    
+    @Column(nullable = false)
+    private Integer paragraphs;
+    
+    @Column(nullable = false)
+    private Integer words;
+    
+    @Column(nullable = false)
+    private Integer characters;
+    
+    @Column(nullable = false)
+    private LocalDateTime analysisDate;
+    
+    // Конструкторы
+<span class="fc" id="L31">    public TextStatistics() {</span>
+<span class="fc" id="L32">    }</span>
+    
+<span class="fc" id="L34">    public TextStatistics(String fileId, Integer paragraphs, Integer words, Integer characters, LocalDateTime analysisDate) {</span>
+<span class="fc" id="L35">        this.fileId = fileId;</span>
+<span class="fc" id="L36">        this.paragraphs = paragraphs;</span>
+<span class="fc" id="L37">        this.words = words;</span>
+<span class="fc" id="L38">        this.characters = characters;</span>
+<span class="fc" id="L39">        this.analysisDate = analysisDate;</span>
+<span class="fc" id="L40">    }</span>
+    
+    // Геттеры и сеттеры
+    public String getFileId() {
+<span class="fc" id="L44">        return fileId;</span>
+    }
+    
+    public void setFileId(String fileId) {
+<span class="fc" id="L48">        this.fileId = fileId;</span>
+<span class="fc" id="L49">    }</span>
+    
+    public Integer getParagraphs() {
+<span class="fc" id="L52">        return paragraphs;</span>
+    }
+    
+    public void setParagraphs(Integer paragraphs) {
+<span class="fc" id="L56">        this.paragraphs = paragraphs;</span>
+<span class="fc" id="L57">    }</span>
+    
+    public Integer getWords() {
+<span class="fc" id="L60">        return words;</span>
+    }
+    
+    public void setWords(Integer words) {
+<span class="fc" id="L64">        this.words = words;</span>
+<span class="fc" id="L65">    }</span>
+    
+    public Integer getCharacters() {
+<span class="fc" id="L68">        return characters;</span>
+    }
+    
+    public void setCharacters(Integer characters) {
+<span class="fc" id="L72">        this.characters = characters;</span>
+<span class="fc" id="L73">    }</span>
+    
+    public LocalDateTime getAnalysisDate() {
+<span class="fc" id="L76">        return analysisDate;</span>
+    }
+    
+    public void setAnalysisDate(LocalDateTime analysisDate) {
+<span class="fc" id="L80">        this.analysisDate = analysisDate;</span>
+<span class="fc" id="L81">    }</span>
+    
+    // Builder паттерн
+    public static TextStatisticsBuilder builder() {
+<span class="fc" id="L85">        return new TextStatisticsBuilder();</span>
+    }
+    
+    public static class TextStatisticsBuilder {
+        private String fileId;
+        private Integer paragraphs;
+        private Integer words;
+        private Integer characters;
+        private LocalDateTime analysisDate;
+        
+<span class="fc" id="L95">        TextStatisticsBuilder() {</span>
+<span class="fc" id="L96">        }</span>
+        
+        public TextStatisticsBuilder fileId(String fileId) {
+<span class="fc" id="L99">            this.fileId = fileId;</span>
+<span class="fc" id="L100">            return this;</span>
+        }
+        
+        public TextStatisticsBuilder paragraphs(Integer paragraphs) {
+<span class="fc" id="L104">            this.paragraphs = paragraphs;</span>
+<span class="fc" id="L105">            return this;</span>
+        }
+        
+        public TextStatisticsBuilder words(Integer words) {
+<span class="fc" id="L109">            this.words = words;</span>
+<span class="fc" id="L110">            return this;</span>
+        }
+        
+        public TextStatisticsBuilder characters(Integer characters) {
+<span class="fc" id="L114">            this.characters = characters;</span>
+<span class="fc" id="L115">            return this;</span>
+        }
+        
+        public TextStatisticsBuilder analysisDate(LocalDateTime analysisDate) {
+<span class="fc" id="L119">            this.analysisDate = analysisDate;</span>
+<span class="fc" id="L120">            return this;</span>
+        }
+        
+        public TextStatistics build() {
+<span class="fc" id="L124">            return new TextStatistics(fileId, paragraphs, words, characters, analysisDate);</span>
+        }
+    }
+    
+    // equals и hashCode
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L132" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="fc" id="L133">        TextStatistics that = (TextStatistics) o;</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        return Objects.equals(fileId, that.fileId) &amp;&amp;</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">               Objects.equals(paragraphs, that.paragraphs) &amp;&amp;</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">               Objects.equals(words, that.words) &amp;&amp;</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">               Objects.equals(characters, that.characters) &amp;&amp;</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">               Objects.equals(analysisDate, that.analysisDate);</span>
+    }
+    
+    @Override
+    public int hashCode() {
+<span class="fc" id="L143">        return Objects.hash(fileId, paragraphs, words, characters, analysisDate);</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
