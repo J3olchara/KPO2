@@ -1,0 +1,4 @@
+ru/hse/filestoring/model/FileEntityTest.class
+ru/hse/filestoring/service/FileStorageServiceTest.class
+ru/hse/filestoring/controller/FileControllerTest.class
+ru/hse/filestoring/repository/FileRepositoryTest.class

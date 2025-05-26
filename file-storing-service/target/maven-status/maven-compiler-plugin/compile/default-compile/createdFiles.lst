@@ -1,0 +1,12 @@
+ru/hse/filestoring/service/FileStorageService.class
+ru/hse/filestoring/model/FileEntity$FileEntityBuilder.class
+ru/hse/filestoring/dto/FileUploadResponse$FileUploadResponseBuilder.class
+ru/hse/filestoring/FileStoringServiceApplication.class
+ru/hse/filestoring/service/impl/FileStorageServiceImpl.class
+ru/hse/filestoring/dto/FileUploadResponse.class
+ru/hse/filestoring/exception/FileNotFoundException.class
+ru/hse/filestoring/config/FileStorageProperties.class
+ru/hse/filestoring/controller/FileController.class
+ru/hse/filestoring/repository/FileRepository.class
+ru/hse/filestoring/model/FileEntity.class
+ru/hse/filestoring/exception/FileStorageException.class
