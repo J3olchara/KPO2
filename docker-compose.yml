@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # API Gateway
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "80:80"
+    depends_on:
+      - file-storing-service
+      - file-analysis-service
+    volumes:
+      - ./api-gateway/html:/usr/share/nginx/html
+    networks:
+      - text-scanner-network
+    restart: always
+
+  # File Storing Service
+  file-storing-service:
+    build: ./file-storing-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres-files
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-files:5432/filestore
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    volumes:
+      - file-storage-data:/app/file-storage
+    networks:
+      - text-scanner-network
+    restart: always
+
+  # File Analysis Service
+  file-analysis-service:
+    build: ./file-analysis-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres-analysis
+      - file-storing-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-analysis:5432/fileanalysis
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - FILE_STORING_SERVICE_URL=http://file-storing-service:8081/api/files
+    networks:
+      - text-scanner-network
+    restart: always
+
+  # PostgreSQL для File Storing Service
+  postgres-files:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=filestore
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-files-data:/var/lib/postgresql/data
+    networks:
+      - text-scanner-network
+    restart: always
+
+  # PostgreSQL для File Analysis Service
+  postgres-analysis:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=fileanalysis
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-analysis-data:/var/lib/postgresql/data
+    networks:
+      - text-scanner-network
+    restart: always
+
+networks:
+  text-scanner-network:
+    driver: bridge
+
+volumes:
+  postgres-files-data:
+  postgres-analysis-data:
+  file-storage-data: 

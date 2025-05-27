@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Документация - Текстовый сканер</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #2980b9;
+        }
+        .endpoint {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .get {
+            background-color: #61affe;
+            color: white;
+        }
+        .post {
+            background-color: #49cc90;
+            color: white;
+        }
+        .delete {
+            background-color: #f93e3e;
+            color: white;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>API Документация - Текстовый сканер</h1>
+        
+        <p>
+            Документация по API микросервисов системы текстового сканера для 
+            анализа студенческих отчетов.
+        </p>
+
+        <h2>File Storing Service</h2>
+        
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <code>/api/files/upload</code>
+            <p>Загрузка текстового файла для анализа</p>
+            
+            <h3>Параметры запроса</h3>
+            <table>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+                <tr>
+                    <td>file</td>
+                    <td>File (multipart/form-data)</td>
+                    <td>Текстовый файл (.txt)</td>
+                </tr>
+            </table>
+            
+            <h3>Ответ</h3>
+            <pre>{
+  "fileId": "string",
+  "fileName": "string",
+  "size": "number",
+  "uploadDate": "string (ISO date)"
+}</pre>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span>
+            <code>/api/files/{fileId}</code>
+            <p>Получение содержимого файла по идентификатору</p>
+            
+            <h3>Параметры пути</h3>
+            <table>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+                <tr>
+                    <td>fileId</td>
+                    <td>string</td>
+                    <td>Идентификатор файла</td>
+                </tr>
+            </table>
+            
+            <h3>Ответ</h3>
+            <p>Содержимое текстового файла или объект с ошибкой</p>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span>
+            <code>/api/files</code>
+            <p>Получение списка всех загруженных файлов</p>
+            
+            <h3>Ответ</h3>
+            <pre>[
+  {
+    "fileId": "string",
+    "fileName": "string",
+    "size": "number",
+    "uploadDate": "string (ISO date)"
+  }
+]</pre>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method delete">DELETE</span>
+            <code>/api/files/{fileId}</code>
+            <p>Удаление файла по идентификатору</p>
+            
+            <h3>Параметры пути</h3>
+            <table>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+                <tr>
+                    <td>fileId</td>
+                    <td>string</td>
+                    <td>Идентификатор файла</td>
+                </tr>
+            </table>
+            
+            <h3>Ответ</h3>
+            <pre>{
+  "success": true,
+  "message": "Файл успешно удален"
+}</pre>
+        </div>
+
+        <h2>File Analysis Service</h2>
+        
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <code>/api/analysis/stats/{fileId}</code>
+            <p>Анализ статистики текстового файла</p>
+            
+            <h3>Параметры пути</h3>
+            <table>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+                <tr>
+                    <td>fileId</td>
+                    <td>string</td>
+                    <td>Идентификатор файла</td>
+                </tr>
+            </table>
+            
+            <h3>Ответ</h3>
+            <pre>{
+  "fileId": "string",
+  "paragraphs": "number",
+  "words": "number",
+  "characters": "number",
+  "analysisDate": "string (ISO date)"
+}</pre>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <code>/api/analysis/similarity/{fileId}</code>
+            <p>Анализ схожести файла с другими загруженными файлами</p>
+            
+            <h3>Параметры пути</h3>
+            <table>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+                <tr>
+                    <td>fileId</td>
+                    <td>string</td>
+                    <td>Идентификатор файла</td>
+                </tr>
+            </table>
+            
+            <h3>Ответ</h3>
+            <pre>{
+  "fileId": "string",
+  "similarFiles": [
+    {
+      "fileId": "string",
+      "fileName": "string",
+      "similarityScore": "number (0-100)"
+    }
+  ],
+  "analysisDate": "string (ISO date)"
+}</pre>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span>
+            <code>/api/analysis/wordcloud/{fileId}</code>
+            <p>Получение облака слов для файла</p>
+            
+            <h3>Параметры пути</h3>
+            <table>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+                <tr>
+                    <td>fileId</td>
+                    <td>string</td>
+                    <td>Идентификатор файла</td>
+                </tr>
+            </table>
+            
+            <h3>Параметры запроса</h3>
+            <table>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                    <th>По умолчанию</th>
+                </tr>
+                <tr>
+                    <td>format</td>
+                    <td>string</td>
+                    <td>Формат изображения (svg/png)</td>
+                    <td>svg</td>
+                </tr>
+                <tr>
+                    <td>width</td>
+                    <td>number</td>
+                    <td>Ширина изображения</td>
+                    <td>600</td>
+                </tr>
+                <tr>
+                    <td>height</td>
+                    <td>number</td>
+                    <td>Высота изображения</td>
+                    <td>600</td>
+                </tr>
+            </table>
+            
+            <h3>Ответ</h3>
+            <p>Изображение в формате SVG или PNG</p>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span>
+            <code>/api/analysis/stats/{fileId}</code>
+            <p>Получение ранее вычисленных статистических данных</p>
+            
+            <h3>Параметры пути</h3>
+            <table>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+                <tr>
+                    <td>fileId</td>
+                    <td>string</td>
+                    <td>Идентификатор файла</td>
+                </tr>
+            </table>
+            
+            <h3>Ответ</h3>
+            <pre>{
+  "fileId": "string",
+  "paragraphs": "number",
+  "words": "number",
+  "characters": "number",
+  "analysisDate": "string (ISO date)"
+}</pre>
+        </div>
+    </div>
+</body>
+</html> 

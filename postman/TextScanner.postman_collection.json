@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "58f2d8b4-14d8-4e64-945c-b43f9d3e2a8e",
+		"name": "Text Scanner API",
+		"description": "API для работы с текстовым сканером",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "File Storage Service",
+			"item": [
+				{
+					"name": "Upload File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/path/to/your/file.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/api/files/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"files",
+								"upload"
+							]
+						},
+						"description": "Загрузка текстового файла для анализа"
+					},
+					"response": []
+				},
+				{
+					"name": "Get File",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/files/{{fileId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"files",
+								"{{fileId}}"
+							]
+						},
+						"description": "Получение содержимого файла по идентификатору"
+					},
+					"response": []
+				},
+				{
+					"name": "List All Files",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/files",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"files"
+							]
+						},
+						"description": "Получение списка всех загруженных файлов"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete File",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/files/{{fileId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"files",
+								"{{fileId}}"
+							]
+						},
+						"description": "Удаление файла по идентификатору"
+					},
+					"response": []
+				}
+			],
+			"description": "API для работы с файлами"
+		},
+		{
+			"name": "File Analysis Service",
+			"item": [
+				{
+					"name": "Analyze Text Statistics",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/analysis/stats/{{fileId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"analysis",
+								"stats",
+								"{{fileId}}"
+							]
+						},
+						"description": "Анализ статистики текста (количество абзацев, слов, символов)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Text Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/analysis/stats/{{fileId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"analysis",
+								"stats",
+								"{{fileId}}"
+							]
+						},
+						"description": "Получение статистики текста"
+					},
+					"response": []
+				},
+				{
+					"name": "Analyze Similarity",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/analysis/similarity/{{fileId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"analysis",
+								"similarity",
+								"{{fileId}}"
+							]
+						},
+						"description": "Анализ схожести файла с другими загруженными файлами"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Similarity Results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/analysis/similarity/{{fileId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"analysis",
+								"similarity",
+								"{{fileId}}"
+							]
+						},
+						"description": "Получение результатов анализа схожести"
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Word Cloud",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/analysis/wordcloud/{{fileId}}?format=svg&width=800&height=600",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"analysis",
+								"wordcloud",
+								"{{fileId}}"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "svg"
+								},
+								{
+									"key": "width",
+									"value": "800"
+								},
+								{
+									"key": "height",
+									"value": "600"
+								}
+							]
+						},
+						"description": "Генерация облака слов для файла"
+					},
+					"response": []
+				}
+			],
+			"description": "API для анализа текстовых файлов"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "fileId",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 
